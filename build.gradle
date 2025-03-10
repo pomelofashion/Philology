@@ -5,7 +5,7 @@ import com.jcminarro.Dependencies
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath Dependencies.androidBuildToolGradlePlugin
@@ -19,7 +19,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 

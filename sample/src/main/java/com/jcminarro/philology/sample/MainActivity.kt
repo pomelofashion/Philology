@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.jcminarro.philology.Philology
-import com.jcminarro.sample.R
+import com.jcminarro.philology.sample.App.R
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 
 class MainActivity : AppCompatActivity() {

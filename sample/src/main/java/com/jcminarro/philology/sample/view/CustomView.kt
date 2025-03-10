@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.jcminarro.sample.R
+import com.jcminarro.philology.sample.App.R
 
 class CustomView @JvmOverloads constructor(
     context: Context,

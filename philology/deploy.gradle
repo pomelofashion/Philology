@@ -1,48 +1,48 @@
 import com.jcminarro.Config
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(id: 'bintray-jcminarro-maven', url: "https://api.bintray.com/maven/jcminarro/maven/$Config.pomArtifactId") {
-                authentication(userName: BINTRAY_USER, password: BINTRAY_API_KEY)
+afterEvaluate {
+  publishing {
+    publications {
+      release(MavenPublication) {
+        groupId = "com.pomelofashion"
+        artifactId = "philology"
+        version = "2.0.1"
+        artifact("$buildDir/outputs/aar/philology-release.aar")
+
+        pom {
+          withXml {
+            def dependenciesNode = asNode().appendNode("dependencies")
+
+            project.configurations.implementation.allDependencies.each { dep ->
+              if (dep.group != null || dep.version != null || dep.name != "unspecified") {
+                def dependencyNode = dependenciesNode.appendNode("dependency")
+                dependencyNode.appendNode("groupId", dep.group)
+                dependencyNode.appendNode("artifactId", dep.name)
+                dependencyNode.appendNode("version", dep.version)
+              }
             }
-            pom.project {
-                groupId=Config.group
-                version=Config.versionName
-                artifactId Config.pomArtifactId
-                name Config.pomName
-                description Config.pomDescription
-                url Config.pomURL
-
-                licenses {
-                    license {
-                        name Config.pomLicenceName
-                        url Config.pomLicenceUrl
-                        distribution Config.pomLicenceDist
-                    }
-                }
-
-                scm {
-                    url Config.pomSCMURL
-                    connection Config.pomSCMConnection
-                    developerConnection Config.pomSCMCDevonnection
-                }
-
-                developers {
-                    developer {
-                        id Config.pomDeveloperId
-                        name Config.pomDeveloperName
-                        email Config.pomDeveloperEmail
-                    }
-                }
-            }
+          }
         }
+      }
     }
+
+    repositories {
+      maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/pomelofashion/mobile-android")
+        credentials {
+          username = System.getenv("USERNAME")
+          password = System.getenv("GH_TOKEN")
+        }
+      }
+    }
+  }
 }
 
+
 task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+  from android.sourceSets.main.java.srcDirs
+  archiveClassifier.set("sources")
 }
